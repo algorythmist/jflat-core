@@ -54,24 +54,12 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
         return readAll(is);
     }
 
-    public ResourceLoader getResourceLoader() {
-        return resourceLoader;
-    }
-
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
-    public BeanMapper<T> getBeanMapper() {
-        return beanMapper;
-    }
-
     public void setBeanMapper(BeanMapper<T> beanMapper) {
         this.beanMapper = beanMapper;
-    }
-
-    public FlatFileParser getParser() {
-        return parser;
     }
 
     public void setParser(FlatFileParser parser) {
