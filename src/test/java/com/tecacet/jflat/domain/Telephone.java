@@ -6,7 +6,7 @@ public class Telephone {
     private final String number;
 
     public Telephone(String phoneNumber) {
-        String normalized = phoneNumber.replaceAll("\\s+", "").trim();
+        String normalized = phoneNumber.replaceAll("[-||\\s+]", "").trim();
         if (normalized.length() != 10) {
             throw new IllegalArgumentException("Invalid Phone Number");
         }

@@ -3,7 +3,7 @@ package com.tecacet.jflat.domain;
 public class Address {
 
     public enum State {
-        CA, NV, MA
+        CA, IL, NV, MA, WA
     }
 
     private State state;
