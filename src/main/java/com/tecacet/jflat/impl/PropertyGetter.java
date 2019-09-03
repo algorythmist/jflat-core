@@ -5,16 +5,16 @@ package com.tecacet.jflat.impl;
  *
  * @author Dimitri Papaioannou
  *
- * @param <T>
+ * @param <T> the bean type
  */
 public interface PropertyGetter<T> {
 
     /**
-     * Get a named property value from a bean Return NULL if any object is NULL
-     * when trying to get the specified property
+     * Get a named property value from a bean
      *
      * @param bean target bean
      * @param propertyName name of the property to access
+     * @return the value corresponding to this property. Null if it does not exist
      */
     Object getProperty(T bean, String propertyName);
 }

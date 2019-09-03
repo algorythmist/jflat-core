@@ -72,7 +72,7 @@ public class BeanTokenizer<T> implements Function<T, String[]> {
     }
 
     public void registerPropertyGetter(String property, Function<T, Object> getter) {
-        customPropertyGetters.put(property, (bean, propertyName) -> getter.apply(bean));
+        registerPropertyGetter(property, (bean, propertyName) -> getter.apply(bean));
     }
 
 }

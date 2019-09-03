@@ -11,7 +11,6 @@ public abstract class AbstractFlatFileWriter<T> implements FlatFileWriter<T> {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected Function<T, String> lineMapper = s -> s.toString();
-
     protected Function<T, String[]> tokenizer = null;
 
     @Override
@@ -28,6 +27,16 @@ public abstract class AbstractFlatFileWriter<T> implements FlatFileWriter<T> {
     public <S> FlatFileWriter<T> registerConverterForClass(Class<S> clazz, Function<S, String> converter) {
         if (tokenizer instanceof BeanTokenizer) {
             ((BeanTokenizer)tokenizer).registerConverter(clazz, converter);
+        } else {
+            logger.warn("Tokenizer {} does not support converters", tokenizer);
+        }
+        return this;
+    }
+
+    @Override
+    public AbstractFlatFileWriter<T> registerPropertyGetter(String property, Function<T, Object> getter) {
+        if (tokenizer instanceof BeanTokenizer) {
+            ((BeanTokenizer)tokenizer).registerPropertyGetter(property, getter);
         } else {
             logger.warn("Tokenizer {} does not support converters", tokenizer);
         }

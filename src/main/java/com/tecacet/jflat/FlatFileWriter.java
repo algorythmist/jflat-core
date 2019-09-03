@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.function.Function;
+import com.tecacet.jflat.impl.AbstractFlatFileWriter;
 
 /**
  * Writes a collection of beans in flat file format
@@ -26,6 +27,8 @@ public interface FlatFileWriter<T> {
     <S> FlatFileWriter<T> registerConverterForProperty(String property, Function<S, String> converter);
 
     <S> FlatFileWriter<T> registerConverterForClass(Class<S> clazz, Function<S, String> converter);
+
+    FlatFileWriter<T> registerPropertyGetter(String property, Function<T, Object> getter);
 
     FlatFileWriter<T> withLineMapper(Function<T, String> mapper);
 }

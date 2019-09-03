@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
  * 
  * @author dimitri
  *
- * @param <T>
+ * @param <T> the bean type
  */
 public interface FlatFileReaderCallback<T> extends BiConsumer<RowRecord, T> {
 	
