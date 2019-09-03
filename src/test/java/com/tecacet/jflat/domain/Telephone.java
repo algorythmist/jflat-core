@@ -26,4 +26,17 @@ public class Telephone {
     public String toString() {
         return String.format("(%s) %s", areaCode, number);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof  Telephone)) {
+            return false;
+        }
+        return this.toString().equals(other.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return  this.toString().hashCode();
+    }
 }

@@ -5,16 +5,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import com.tecacet.jflat.BeanMapper;
+import com.tecacet.jflat.ConverterRegistry;
 import com.tecacet.jflat.FlatFileParser;
 import com.tecacet.jflat.FlatFileReader;
 import com.tecacet.jflat.FlatFileReaderCallback;
 import com.tecacet.jflat.ResourceLoader;
 import com.tecacet.jflat.RowRecord;
+import com.tecacet.jflat.impl.jodd.JoddConverterRegistry;
 
 public class GenericFlatFileReader<T> implements FlatFileReader<T> {
 
+    private final ConverterRegistry converterRegistry = new JoddConverterRegistry();
     private ResourceLoader resourceLoader = new SequentialResourceLoader(new FileSystemResourceLoader(),
             new ClasspathResourceLoader());
 
@@ -42,7 +46,6 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
         }
     }
 
-
     @Override
     public Stream<T> readAsStream(Reader reader) throws IOException {
         return parser.parseStream(reader).map(record -> beanMapper.apply(record));
@@ -52,6 +55,12 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
     public List<T> readAll(String resourceName) throws IOException {
         InputStream is = resourceLoader.loadResource(resourceName);
         return readAll(is);
+    }
+
+    @Override
+    public <S> FlatFileReader<T> registerConverter(Class<S> type, Function<String, S> converter) {
+        converterRegistry.registerConverter(type, converter);
+        return this;
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -42,4 +43,6 @@ public interface FlatFileReader<T> {
         read(is, (record, bean) -> list.add(bean));
         return list;
     }
+
+    <S> FlatFileReader<T> registerConverter(Class<S> type, Function<String, S> converter);
 }
