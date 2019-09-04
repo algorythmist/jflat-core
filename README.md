@@ -51,9 +51,28 @@ and look for a particular record.
     Contact contact = reader.readAsStream(r)
                 .filter(c -> c.getAddress().getState() == Address.State.CA).findFirst()
                 .orElse(null);
+```
 
 ## Writing to files
 
-TODO
+```java
+    String[] properties = {"firstName", "lastName", "telephone",
+                "address.numberAndStreet", "address.city", "address.state", "address.zip"};
+    String[] header = {"First Name", "Last Name", "Phone", "Street", "City", "State", "Zip" };
+        CSVWriter csvWriter = CSVWriter
+                .createForProperties(properties)
+                .withHeader(header)
+                .registerConverterForClass(Telephone.class, telephone -> telephone.getNumber()+telephone.getAreaCode());
+    csvWriter.writeToFile("contacts.csv", contacts);   
+
+```
+
+```java
+
+ String[] properties = {"name", "address", "telephone", "address.zip"};
+    FixedWidthWriter<Contact> fixedWidthWriter = new FixedWidthWriter<>(new int[] {20, 40, 10, 7},
+                properties);
+    List<Contact> contacts = Arrays.asList(contact1, contact2);
+    fixedWidthWriter.writeToFile("contacts.txt", contacts);
 ```
 
