@@ -49,6 +49,8 @@ class CSVWriterTest {
                 .withTokenizer(q ->
                 new String[] {q.getDate().toString(), q.getOpen().toString(), q.getVolume().toString()});
         csvWriter.writeToFile("test2.csv", Arrays.asList(quote1, quote2));
+
+        new File("test2.csv").delete();
     }
 
     @Test
@@ -67,7 +69,7 @@ class CSVWriterTest {
 
         csvWriter.writeToFile("test3.csv", Arrays.asList(quote1, quote2));
 
-        File file = new File("test2.csv");
+        File file = new File("test3.csv");
         assertTrue(file.exists());
         List<String> lines = Files.readAllLines(Paths.get(file.toURI()));
         assertEquals(3, lines.size());
