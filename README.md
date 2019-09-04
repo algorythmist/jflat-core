@@ -64,12 +64,10 @@ and look for a particular record.
                 .withHeader(header)
                 .registerConverterForClass(Telephone.class, telephone -> telephone.getNumber()+telephone.getAreaCode());
     csvWriter.writeToFile("contacts.csv", contacts);   
-
 ```
 
 ```java
-
- String[] properties = {"name", "address", "telephone", "address.zip"};
+    String[] properties = {"name", "address", "telephone", "address.zip"};
     FixedWidthWriter<Contact> fixedWidthWriter = new FixedWidthWriter<>(new int[] {20, 40, 10, 7},
                 properties);
     List<Contact> contacts = Arrays.asList(contact1, contact2);

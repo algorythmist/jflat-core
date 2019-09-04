@@ -2,5 +2,5 @@
 - reader: read derived properties
 - reader: skip rows
 - support class inheritance for converters
-- README
+- README: coverters, custom properties, CSVFormat
 - BUG: property and class converters clash
