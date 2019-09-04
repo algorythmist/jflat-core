@@ -66,7 +66,7 @@ and look for a particular record.
     csvWriter.writeToFile("contacts.csv", contacts);   
 ```
 
-```
+```java
     String[] properties = {"name", "address", "telephone", "address.zip"};
     FixedWidthWriter<Contact> fixedWidthWriter = new FixedWidthWriter<>(new int[] {20, 40, 10, 7},
                 properties);
