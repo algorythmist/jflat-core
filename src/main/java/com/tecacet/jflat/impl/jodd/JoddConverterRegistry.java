@@ -12,6 +12,10 @@ public class JoddConverterRegistry implements ConverterRegistry {
 		TypeConverterManager.get().register(toType, fromFunction(converter));
 	}
 
+	public <C> void unregister(Class<C> type) {
+		TypeConverterManager.get().unregister(type);
+	}
+
 	private static <C> TypeConverter<C> fromFunction(Function<String, C> function) {
 		return o -> {
 			if (o == null) {

@@ -94,7 +94,8 @@ class CSVWriterTest {
         assertEquals(contacts.get(1).getAddress().getCity(), results.get(1).getAddress().getCity());
         assertEquals(contacts.get(1).getAddress().getState(), results.get(1).getAddress().getState());
 
-        new File("contacts1.csv").delete();
+        boolean deleted = new File("contacts1.csv").delete();
+        assertTrue(deleted);
     }
 
     private List<Contact> createContacts() {

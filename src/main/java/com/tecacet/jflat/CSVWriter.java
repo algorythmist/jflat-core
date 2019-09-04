@@ -16,15 +16,16 @@ public class CSVWriter<T> extends AbstractFlatFileWriter<T> {
 
     @Override
     public void write(Writer writer, Collection<T> beans) throws IOException {
-        CSVPrinter csvPrinter = new CSVPrinter(writer, format);
-        if (header != null) {
-            csvPrinter.printRecord(header);
-        }
-        for (T bean : beans) {
-            if (tokenizer != null) {
-                csvPrinter.printRecord(tokenizer.apply(bean));
-            } else {
-                csvPrinter.printRecord(lineMapper.apply(bean));
+        try (CSVPrinter csvPrinter = new CSVPrinter(writer, format)) {
+            if (header != null) {
+                csvPrinter.printRecord(header);
+            }
+            for (T bean : beans) {
+                if (tokenizer != null) {
+                    csvPrinter.printRecord(tokenizer.apply(bean));
+                } else {
+                    csvPrinter.printRecord(lineMapper.apply(bean));
+                }
             }
         }
     }

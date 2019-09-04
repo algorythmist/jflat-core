@@ -38,11 +38,12 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
 
     @Override
     public void read(InputStream is, FlatFileReaderCallback<T> callback) throws IOException {
-        InputStreamReader reader = new InputStreamReader(is);
-        Iterable<RowRecord> records = parser.parse(reader);
-        for (RowRecord record : records) {
-            T bean = beanMapper.apply(record);
-            callback.accept(record, bean);
+        try (InputStreamReader reader = new InputStreamReader(is)) {
+            Iterable<RowRecord> records = parser.parse(reader);
+            for (RowRecord record : records) {
+                T bean = beanMapper.apply(record);
+                callback.accept(record, bean);
+            }
         }
     }
 
