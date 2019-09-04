@@ -3,3 +3,6 @@
 - reader: skip rows
 - support class inheritance for converters
 - README
+- make sure files created by tests are properly deleted (open streams?)
+
+
