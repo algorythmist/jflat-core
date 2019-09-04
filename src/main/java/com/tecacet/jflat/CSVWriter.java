@@ -7,7 +7,7 @@ import java.util.function.Function;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import com.tecacet.jflat.impl.AbstractFlatFileWriter;
-import com.tecacet.jflat.impl.jodd.BeanTokenizer;
+import com.tecacet.jflat.impl.BeanTokenizer;
 
 public class CSVWriter<T> extends AbstractFlatFileWriter<T> {
 
@@ -30,7 +30,7 @@ public class CSVWriter<T> extends AbstractFlatFileWriter<T> {
     }
 
     public static <T> CSVWriter<T> createForProperties(String[] properties) {
-        return new CSVWriter<T>().withTokenizer(new BeanTokenizer<T>(properties));
+        return new CSVWriter<T>().withTokenizer(new BeanTokenizer<>(properties));
     }
 
     @Override

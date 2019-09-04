@@ -1,6 +1,6 @@
 package com.tecacet.jflat.impl.jodd;
 
-import com.tecacet.jflat.impl.PropertyGetter;
+import com.tecacet.jflat.PropertyGetter;
 import jodd.bean.BeanUtil;
 
 public class JoddPropertyGetter<T> implements PropertyGetter<T> {

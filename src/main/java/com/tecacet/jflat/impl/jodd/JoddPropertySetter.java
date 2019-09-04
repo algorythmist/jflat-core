@@ -1,6 +1,6 @@
 package com.tecacet.jflat.impl.jodd;
 
-import com.tecacet.jflat.impl.PropertySetter;
+import com.tecacet.jflat.PropertySetter;
 import jodd.bean.BeanUtil;
 
 public class JoddPropertySetter<T> implements PropertySetter<T> {
@@ -15,7 +15,7 @@ public class JoddPropertySetter<T> implements PropertySetter<T> {
     }
 
     @Override
-    public void setProperty(T bean, String property, String value) {
+    public void setProperty(T bean, String property, Object value) {
         beanUtil.setProperty(bean, property, value);
     }
 }

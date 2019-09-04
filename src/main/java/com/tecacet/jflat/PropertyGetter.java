@@ -1,4 +1,4 @@
-package com.tecacet.jflat.impl;
+package com.tecacet.jflat;
 
 /**
  * Abstraction for getting object properties

@@ -2,14 +2,13 @@ package com.tecacet.jflat.impl.jodd;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
-import com.tecacet.jflat.domain.Address;
 import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ContactDataMaker;
 import com.tecacet.jflat.domain.Telephone;
+import com.tecacet.jflat.impl.BeanTokenizer;
 
 class BeanTokenizerTest {
 

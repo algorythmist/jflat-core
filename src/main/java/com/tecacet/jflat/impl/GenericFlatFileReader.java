@@ -74,4 +74,11 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
     public void setParser(FlatFileParser parser) {
         this.parser = parser;
     }
+
+    public <S> void registerConverter(String property, Function<S, String> converter) {
+        if (beanMapper instanceof GenericBeanMapper) {
+            ((GenericBeanMapper)beanMapper).registerConverter(property, converter);
+        }
+    }
+
 }

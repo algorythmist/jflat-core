@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
-import com.tecacet.jflat.domain.Address;
 import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ImmutableQuote;
 import com.tecacet.jflat.domain.Telephone;
@@ -101,7 +100,7 @@ class CSVWriterTest {
     private List<Contact> createContacts() {
         return Arrays.asList(
                 createContact("Homer", "Simpson", "312 908 1672", "24 Maple St."),
-                createContact("Seymur", "Skinner", "6722908972", "96 Orchard Ave."),
+                createContact("Seymour", "Skinner", "6722908972", "96 Orchard Ave."),
                 createContact("Marge", "Simpson", "312908 1672", "24 Maple St.")
         );
     }

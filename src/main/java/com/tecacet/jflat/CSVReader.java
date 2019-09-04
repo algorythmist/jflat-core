@@ -1,5 +1,6 @@
 package com.tecacet.jflat;
 
+import java.util.function.Function;
 import org.apache.commons.csv.CSVFormat;
 import com.tecacet.jflat.impl.ArrayBeanMapper;
 import com.tecacet.jflat.impl.CSVFileParser;
@@ -39,4 +40,9 @@ public class CSVReader<T> extends GenericFlatFileReader<T> {
                 .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader());
     }
 
+    @Override
+    public <S> CSVReader<T> registerConverter(Class<S> type, Function<String, S> converter) {
+        super.registerConverter(type, converter);
+        return this;
+    }
 }

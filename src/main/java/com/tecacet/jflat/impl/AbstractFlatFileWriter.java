@@ -4,13 +4,12 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tecacet.jflat.FlatFileWriter;
-import com.tecacet.jflat.impl.jodd.BeanTokenizer;
 
 public abstract class AbstractFlatFileWriter<T> implements FlatFileWriter<T> {
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected Function<T, String> lineMapper = s -> s.toString();
+    protected Function<T, String> lineMapper = Object::toString;
     protected Function<T, String[]> tokenizer = null;
 
     @Override

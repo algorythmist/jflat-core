@@ -11,7 +11,9 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 import com.tecacet.jflat.domain.ClassicQuote;
+import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ImmutableQuote;
+import com.tecacet.jflat.domain.Telephone;
 
 class CSVReaderTest {
 
@@ -22,7 +24,8 @@ class CSVReaderTest {
                         .withFirstRecordAsHeader()
                         .withSkipHeaderRecord(true));
         List<String[]> contacts = reader.readAll("contacts.csv");
-        contacts.forEach(c -> System.out.println(Arrays.toString(c)));
+        assertEquals(2, contacts.size());
+        assertEquals("Aardvark", contacts.get(0)[0]);
     }
 
     @Test
@@ -31,7 +34,9 @@ class CSVReaderTest {
                 new String[]{"date", "open", null, null, "close", "volume", null});
         List<ClassicQuote> quotes = csvReader.readAll("GLD.csv");
         assertEquals(134, quotes.size());
-        System.out.println(quotes.get(10));
+        ClassicQuote quote = quotes.get(10);
+        assertEquals(7036000, quote.getVolume());
+        assertEquals(LocalDate.of(2015, 2,2), quote.getDate());
     }
 
     @Test
@@ -72,9 +77,17 @@ class CSVReaderTest {
     }
 
     @Test
-    public void testReadWithConverter() {
-        String[] properties = {"name", "lastName", "volume"};
-        String[] header = {"Date", "Open", "Volume"};
-
+    public void testReadWithTypeConverter() throws IOException {
+        String[] properties = {"firstName", "lastName", "telephone"};
+        String[] header = {"First Name", "Last Name", "Phone" };
+        CSVReader<Contact> csvReader = CSVReader
+                .createWithHeaderMapping(Contact.class, header, properties)
+                .registerConverter(Telephone.class, Telephone::new);
+        List<Contact> contacts = csvReader.readAll("contacts1.csv");
+        assertEquals(3, contacts.size());
+        Contact contact = contacts.get(1);
+        assertEquals("Seymour", contact.getFirstName());
+        assertEquals("Skinner", contact.getLastName());
+        assertEquals("(290) 8972672", contact.getTelephone().toString());
     }
 }

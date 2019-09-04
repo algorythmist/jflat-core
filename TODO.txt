@@ -2,3 +2,4 @@
 - reader: register converter for property
 - reader: read derived properties
 - reader: skip rows
+- support class inheritance for converters

@@ -1,10 +1,16 @@
-package com.tecacet.jflat.impl.jodd;
+package com.tecacet.jflat.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import com.tecacet.jflat.impl.PropertyGetter;
+import com.tecacet.jflat.PropertyGetter;
+import com.tecacet.jflat.impl.jodd.JoddPropertyGetter;
 
+/**
+ * Convert a bean to an array of tokens
+ *
+ * @param <T> the type of the bean
+ */
 public class BeanTokenizer<T> implements Function<T, String[]> {
 
     private final PropertyGetter<T> propertyGetter;
@@ -56,7 +62,7 @@ public class BeanTokenizer<T> implements Function<T, String[]> {
         if (converter != null) {
             return converter;
         }
-        return classConverters.get(value.getClass()); //TODO support inherritance
+        return classConverters.get(value.getClass()); //TODO support inheritance
     }
 
     public <S> void registerConverter(String property, Function<S, String> converter) {

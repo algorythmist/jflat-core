@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.Collection;
 import com.tecacet.jflat.impl.AbstractFlatFileWriter;
 import com.tecacet.jflat.impl.FixedWidthLineMerger;
-import com.tecacet.jflat.impl.jodd.BeanTokenizer;
+import com.tecacet.jflat.impl.BeanTokenizer;
 
 public class FixedWidthWriter<T> extends AbstractFlatFileWriter<T> {
 

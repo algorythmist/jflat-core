@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ContactDataMaker;
 import com.tecacet.jflat.domain.Telephone;
-import com.tecacet.jflat.impl.jodd.BeanTokenizer;
 
 class FixedWidthWriterTest {
 
