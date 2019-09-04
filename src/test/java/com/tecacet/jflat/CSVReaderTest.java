@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 import com.tecacet.jflat.domain.ClassicQuote;
@@ -83,6 +84,22 @@ class CSVReaderTest {
         CSVReader<Contact> csvReader = CSVReader
                 .createWithHeaderMapping(Contact.class, header, properties)
                 .registerConverter(Telephone.class, Telephone::new);
+        List<Contact> contacts = csvReader.readAll("contacts1.csv");
+        assertEquals(3, contacts.size());
+        Contact contact = contacts.get(1);
+        assertEquals("Seymour", contact.getFirstName());
+        assertEquals("Skinner", contact.getLastName());
+        assertEquals("(290) 8972672", contact.getTelephone().toString());
+    }
+
+    @Test
+    public void testReadWithPropertyConverter() throws IOException {
+        String[] properties = {"firstName", "lastName", "telephone"};
+        String[] header = {"First Name", "Last Name", "Phone" };
+        Function<String, Telephone> telephoneConverter = Telephone::new;
+        FlatFileReader<Contact> csvReader = CSVReader
+                .createWithHeaderMapping(Contact.class, header, properties)
+                .registerConverter("telephone", telephoneConverter);
         List<Contact> contacts = csvReader.readAll("contacts1.csv");
         assertEquals(3, contacts.size());
         Contact contact = contacts.get(1);

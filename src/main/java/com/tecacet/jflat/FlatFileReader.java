@@ -45,4 +45,6 @@ public interface FlatFileReader<T> {
     }
 
     <S> FlatFileReader<T> registerConverter(Class<S> type, Function<String, S> converter);
+
+    <S> FlatFileReader<T> registerConverter(String property, Function<String, S> converter);
 }

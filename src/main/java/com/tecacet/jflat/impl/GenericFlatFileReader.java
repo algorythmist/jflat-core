@@ -57,12 +57,6 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
         return readAll(is);
     }
 
-    @Override
-    public <S> FlatFileReader<T> registerConverter(Class<S> type, Function<String, S> converter) {
-        converterRegistry.registerConverter(type, converter);
-        return this;
-    }
-
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
@@ -75,10 +69,18 @@ public class GenericFlatFileReader<T> implements FlatFileReader<T> {
         this.parser = parser;
     }
 
-    public <S> void registerConverter(String property, Function<S, String> converter) {
+    @Override
+    public <S> FlatFileReader<T> registerConverter(Class<S> type, Function<String, S> converter) {
+        converterRegistry.registerConverter(type, converter);
+        return this;
+    }
+
+    @Override
+    public <S> FlatFileReader<T> registerConverter(String property, Function<String, S> converter) {
         if (beanMapper instanceof GenericBeanMapper) {
             ((GenericBeanMapper)beanMapper).registerConverter(property, converter);
         }
+        return this;
     }
 
 }

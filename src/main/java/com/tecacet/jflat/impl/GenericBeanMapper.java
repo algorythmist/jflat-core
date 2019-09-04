@@ -47,7 +47,7 @@ public class GenericBeanMapper<T> implements BeanMapper<T> {
         propertySetter.setProperty(bean, property, value);
     }
 
-    public <S> void registerConverter(String property, Function<S, String> converter) {
+    public <S> void registerConverter(String property, Function<String, S> converter) {
         propertyConverters.put(property, converter);
     }
 
