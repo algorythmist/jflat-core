@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.function.Function;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
+import com.tecacet.jflat.domain.Address;
 import com.tecacet.jflat.domain.ClassicQuote;
 import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ImmutableQuote;
@@ -79,7 +80,28 @@ class CSVReaderTest {
     }
 
     @Test
-    public void testReadWithTypeConverter() throws IOException {
+    void testWithCSVFormat() throws IOException {
+        String[] properties = {"firstName", "lastName", "telephone",
+                "address.numberAndStreet", "address.city", "address.state", "address.zip"};
+        CSVReader<Contact> csvReader = CSVReader.createWithIndexMapping(Contact.class, properties)
+                .withFormat(CSVFormat.TDF)
+                .registerConverter(Telephone.class, Telephone::new);
+
+        List<Contact> contacts = csvReader.readAll("contacts.tdf");
+        assertEquals(3, contacts.size());
+        Contact contact = contacts.get(1);
+        assertEquals("Seymour", contact.getFirstName());
+        assertEquals("Skinner", contact.getLastName());
+        assertEquals("(290) 8972672", contact.getTelephone().toString());
+        Address address = contact.getAddress();
+        assertEquals(Address.State.NV, address.getState());
+        assertEquals("Springfield", address.getCity());
+        assertEquals(12345, address.getZip());
+        assertEquals("96 Orchard Ave.", address.getNumberAndStreet());
+    }
+
+    @Test
+    void testReadWithTypeConverter() throws IOException {
         String[] properties = {"firstName", "lastName", "telephone"};
         String[] header = {"First Name", "Last Name", "Phone" };
         CSVReader<Contact> csvReader = CSVReader
