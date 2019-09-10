@@ -1,6 +1,7 @@
 package com.tecacet.jflat.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,9 @@ class GenericBeanMapperTest {
     @Test
     void testGetSimpleRow() {
 
-        BeanMapper<Order> mapper = new GenericBeanMapper(new BeanFactory<>(Order.class),
+        BeanMapper<Order> mapper = new GenericBeanMapper<>(new BeanFactory<>(Order.class),
                 new JoddPropertySetter(),
                 new IndexRecordExtractor(new int[] {0,1,2}),
-                //TODO new HeaderRecordExtractor(new String[]{"Number", "Price", "Quantity"}),
                 new String[]{"number", "price", "quantity"});
 
         RowRecord record = new ArrayRowRecord(1, new String[]{"911", "12.5", "100"});
@@ -32,4 +32,40 @@ class GenericBeanMapperTest {
 
     }
 
+    @Test
+    void testGetNestedRow() {
+        BeanMapper<Order> mapper = new GenericBeanMapper<>(new BeanFactory<>(Order.class),
+                new JoddPropertySetter(),
+                new IndexRecordExtractor(new int[] {0,1,2, 3}),
+                new String[]{"number", "price", "quantity", "customer.firstName"});
+
+        RowRecord record = new ArrayRowRecord(1,
+                new String[] { "911", "12.5", "100", "Jack" });
+        Order order = mapper.apply(record);
+        assertEquals(100, order.getQuantity());
+        assertEquals("911", order.getNumber());
+        assertEquals(12.5, order.getPrice(), 0.0001);
+        assertNotNull(order.getCustomer());
+        assertEquals("Jack", order.getCustomer().getFirstName());
+    }
+
+    @Test
+    void testConverter() {
+        GenericBeanMapper<Order> mapper = new GenericBeanMapper<>(new BeanFactory<>(Order.class),
+                new JoddPropertySetter(),
+                new IndexRecordExtractor(new int[] {0,1,2, 3}),
+                new String[]{"number", "price", "quantity", "customer.firstName"});
+
+
+        mapper.registerConverter("price",
+            (value) -> Double.parseDouble(value.substring(value.indexOf("$") + 1)));
+
+        RowRecord record = new ArrayRowRecord(1,
+                new String[] { "911", "$12.5", "100", "Jack" });
+        Order order = mapper.apply(record);
+        assertEquals(100, order.getQuantity());
+        assertEquals("911", order.getNumber());
+        assertEquals(12.5, order.getPrice(), 0.0001);
+        assertNotNull(order.getCustomer());
+    }
 }
