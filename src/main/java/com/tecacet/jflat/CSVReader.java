@@ -30,7 +30,7 @@ public class CSVReader<T> extends GenericFlatFileReader<T> {
 
     public static <T> CSVReader<T> createWithIndexMapping(Class<T> type, String[] properties) {
         return new CSVReader<>(new IndexBeanMapper<>(type, properties))
-                .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withSkipHeaderRecord());
+                .withFormat(CSVFormat.DEFAULT);
     }
 
     public static <T> CSVReader<T> createWithHeaderMapping(Class<T> type,
