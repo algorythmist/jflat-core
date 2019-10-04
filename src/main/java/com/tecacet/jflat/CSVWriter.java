@@ -42,7 +42,7 @@ public class CSVWriter<T> extends AbstractFlatFileWriter<T> {
 
     public CSVWriter<T> withTokenizer(Function<T, String[]> tokenizer) {
         this.tokenizer = tokenizer;
-        return this;
+        return CSVWriter.this;
     }
 
     public CSVWriter<T> withHeader(String[] header) {

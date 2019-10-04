@@ -2,6 +2,7 @@ package com.tecacet.jflat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import com.tecacet.jflat.domain.Address;
 import com.tecacet.jflat.domain.ClassicQuote;
 import com.tecacet.jflat.domain.Contact;
+import com.tecacet.jflat.domain.Customer;
 import com.tecacet.jflat.domain.ImmutableQuote;
 import com.tecacet.jflat.domain.Telephone;
 import com.tecacet.jflat.impl.jodd.JoddConverterRegistry;
@@ -34,7 +36,8 @@ class CSVReaderTest {
     @Test
     void testClassicQuote() throws IOException {
         FlatFileReader<ClassicQuote> csvReader = CSVReader.createWithIndexMapping(ClassicQuote.class,
-                new String[]{"date", "open", null, null, "close", "volume", null});
+                new String[]{"date", "open", null, null, "close", "volume", null})
+                .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withSkipHeaderRecord());
         List<ClassicQuote> quotes = csvReader.readAll("GLD.csv");
         assertEquals(134, quotes.size());
         ClassicQuote quote = quotes.get(10);
@@ -45,7 +48,8 @@ class CSVReaderTest {
     @Test
     public void readAsStream() throws IOException {
         FlatFileReader<ImmutableQuote> csvReader = CSVReader.createWithIndexMapping(ImmutableQuote.class,
-                new String[]{"date", "open", null, null, "close", "volume", "adjustedClose"});
+                new String[]{"date", "open", null, null, "close", "volume", "adjustedClose"})
+                .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withSkipHeaderRecord());
         LocalDate date = LocalDate.of(2015, 5, 1);
         InputStream is = ClassLoader.getSystemResourceAsStream("GLD.csv");
         ImmutableQuote quote = csvReader.readAsStream(is)
@@ -55,9 +59,10 @@ class CSVReaderTest {
     }
 
     @Test
-    public void readWithCallback() throws IOException {
+    void readWithCallback() throws IOException {
         FlatFileReader<ImmutableQuote> csvReader = CSVReader.createWithIndexMapping(ImmutableQuote.class,
-                new String[]{"date", "open", null, null, "close", "volume", "adjustedClose"});
+                new String[]{"date", "open", null, null, "close", "volume", "adjustedClose"})
+                .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withSkipHeaderRecord());
 
         List<RowRecord> records = new ArrayList<>();
         csvReader.read("GLD.csv", (row, bean) -> records.add(row));
@@ -65,7 +70,7 @@ class CSVReaderTest {
     }
 
     @Test
-    public void readWithHeaderMapping() throws IOException {
+    void readWithHeaderMapping() throws IOException {
         String[] properties = {"date", "open", "volume"};
         String[] header = {"Date", "Open", "Volume"};
 
