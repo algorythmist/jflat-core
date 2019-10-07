@@ -16,7 +16,7 @@ class FixedWidthReaderTest {
 
     @Test
     void testDefaultReader() throws IOException {
-        FixedWidthReader<String[]> reader = FixedWidthReader.createDefaultReader(new int[] {20,10,12});
+        FixedWidthReader<String[]> reader = FixedWidthReader.createDefaultReader(new int[]{20, 10, 12});
         List<String[]> items = reader.readAll("directory.txt");
         items.forEach(c -> System.out.println(Arrays.toString(c)));
     }
@@ -25,21 +25,22 @@ class FixedWidthReaderTest {
     void testIndexedReader() throws IOException {
         FixedWidthReader<Contact> reader = FixedWidthReader.createWithIndexMapping(
                 Contact.class,
-                new String[] {"name", "address.state", "telephone"},
-                new int[] {20,10,12})
-            .registerConverter(Telephone.class, s -> new Telephone(s));
-        //TODO skip first row
+                new String[]{"name", "address.state", "telephone"},
+                new int[]{20, 10, 12})
+                .withSkipRows(1)
+                .registerConverter(Telephone.class, s -> new Telephone(s));
         //TODO: map name
 
         List<Contact> items = reader.readAll("directory.txt");
+        assertEquals(3, items.size());
         items.forEach(c -> System.out.println(c));
     }
 
     @Test
     public void readAsStream() throws IOException {
         FixedWidthReader<Contact> reader = FixedWidthReader.createWithIndexMapping(Contact.class,
-                new String[] {"name", "address.state", "telephone"},
-                new int[] {20,10,12})
+                new String[]{"name", "address.state", "telephone"},
+                new int[]{20, 10, 12})
                 .registerConverter(Telephone.class, s -> new Telephone(s));
         InputStream is = ClassLoader.getSystemResourceAsStream("directory.txt");
         InputStreamReader r = new InputStreamReader(is);

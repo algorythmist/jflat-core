@@ -2,6 +2,6 @@
 - reader: read derived properties
 - reader: skip rows
 - support class inheritance for converters
-- README: coverters, custom properties, CSVFormat
+- README: converters, custom properties, CSVFormat
 - BUG: property and class converters clash
 - How to get CSVWriter methods to return a typed object?

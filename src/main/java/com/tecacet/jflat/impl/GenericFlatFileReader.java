@@ -14,8 +14,8 @@ import com.tecacet.jflat.RowRecord;
 
 public class GenericFlatFileReader<T> extends AbstractFlatFileReader<T> {
 
-    private BeanMapper<T> beanMapper;
-    private FlatFileParser parser;
+    protected BeanMapper<T> beanMapper;
+    protected FlatFileParser parser;
 
     public GenericFlatFileReader(BeanMapper<T> beanMapper, FlatFileParser parser) {
         this.beanMapper = beanMapper;

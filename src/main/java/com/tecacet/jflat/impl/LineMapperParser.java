@@ -10,9 +10,15 @@ import com.tecacet.jflat.RowRecord;
 public class LineMapperParser implements FlatFileParser {
 
     private final LineMapper lineMapper;
+    private final int skipRows;
 
     public LineMapperParser(LineMapper lineMapper) {
+        this(lineMapper, 0);
+    }
+
+    public LineMapperParser(LineMapper lineMapper, int skipRows) {
         this.lineMapper = lineMapper;
+        this.skipRows = skipRows;
     }
 
     @Override
@@ -20,6 +26,7 @@ public class LineMapperParser implements FlatFileParser {
         BufferedReader bufferedReader = new BufferedReader(reader);
         AtomicLong lineNumber = new AtomicLong(0);
         Iterator<String> iterator = bufferedReader.lines().iterator();
+        skipRows(iterator);
 
         return () -> new Iterator<RowRecord>() {
             @Override
@@ -35,5 +42,12 @@ public class LineMapperParser implements FlatFileParser {
         };
 
     }
-    
+
+    private void skipRows(Iterator<String> iterator) {
+        int rows = 0;
+        while (iterator.hasNext() && rows < skipRows) {
+            iterator.next();
+            rows++;
+        }
+    }
 }
