@@ -33,7 +33,7 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/algorythmist/jflat</url>
+		<url>https://github.com/algorythmist/jflat-core</url>
 		<connection>scm:git:git@github.com:algorythmist/jflat-core.git</connection>
 		<developerConnection>scm:git:git@github.com:algorythmist/jflat-core.git</developerConnection>
 	</scm>

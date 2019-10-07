@@ -45,9 +45,9 @@ class CSVWriterTest {
         ImmutableQuote quote1 = new ImmutableQuote(date, BigDecimal.valueOf(1.0), BigDecimal.valueOf(2.0), BigInteger.valueOf(100), null);
         ImmutableQuote quote2 = new ImmutableQuote(date, BigDecimal.valueOf(10.0), BigDecimal.valueOf(20.0), BigInteger.valueOf(1000), null);
         CSVWriter<ImmutableQuote> csvWriter = new CSVWriter();
-        csvWriter.withHeader(new String[] {"Date", "Price", "Volume"})
+        csvWriter.withHeader(new String[]{"Date", "Price", "Volume"})
                 .withTokenizer(q ->
-                new String[] {q.getDate().toString(), q.getOpen().toString(), q.getVolume().toString()});
+                        new String[]{q.getDate().toString(), q.getOpen().toString(), q.getVolume().toString()});
         csvWriter.writeToFile("test2.csv", Arrays.asList(quote1, quote2));
 
         new File("test2.csv").delete();
@@ -62,8 +62,8 @@ class CSVWriterTest {
         Function<LocalDate, String> dateConverter = date -> date.format(DateTimeFormatter.ofPattern("dd/MM/yy"));
         Function<BigDecimal, String> closeConverter = n -> n.toBigInteger().toString();
         CSVWriter csvWriter = CSVWriter
-                .createForProperties(new String[] {"date","open", "close", "volume"})
-                .withHeader(new String[] {"Date", "Open", "Close", "Volume"})
+                .createForProperties(new String[]{"date", "open", "close", "volume"})
+                .withHeader(new String[]{"Date", "Open", "Close", "Volume"})
                 .registerConverterForClass(LocalDate.class, dateConverter)
                 .registerConverterForProperty("close", closeConverter);
 
@@ -81,11 +81,11 @@ class CSVWriterTest {
         List<Contact> contacts = createContacts();
         String[] properties = {"firstName", "lastName", "telephone",
                 "address.numberAndStreet", "address.city", "address.state", "address.zip"};
-        String[] header = {"First Name", "Last Name", "Phone", "Street", "City", "State", "Zip" };
+        String[] header = {"First Name", "Last Name", "Phone", "Street", "City", "State", "Zip"};
         CSVWriter csvWriter = CSVWriter
                 .createForProperties(properties)
                 .withHeader(header)
-                .registerConverterForClass(Telephone.class, telephone -> telephone.getNumber()+telephone.getAreaCode());
+                .registerConverterForClass(Telephone.class, telephone -> telephone.getNumber() + telephone.getAreaCode());
         csvWriter.writeToFile("contacts1.csv", contacts);
 
         CSVReader<Contact> csvReader = CSVReader.createWithHeaderMapping(Contact.class, header, properties);

@@ -2,12 +2,10 @@ package com.tecacet.jflat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import org.apache.commons.csv.CSVFormat;
@@ -15,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import com.tecacet.jflat.domain.Address;
 import com.tecacet.jflat.domain.ClassicQuote;
 import com.tecacet.jflat.domain.Contact;
-import com.tecacet.jflat.domain.Customer;
 import com.tecacet.jflat.domain.ImmutableQuote;
 import com.tecacet.jflat.domain.Telephone;
 import com.tecacet.jflat.impl.jodd.JoddConverterRegistry;
@@ -42,7 +39,7 @@ class CSVReaderTest {
         assertEquals(134, quotes.size());
         ClassicQuote quote = quotes.get(10);
         assertEquals(7036000, quote.getVolume());
-        assertEquals(LocalDate.of(2015, 2,2), quote.getDate());
+        assertEquals(LocalDate.of(2015, 2, 2), quote.getDate());
     }
 
     @Test
@@ -108,7 +105,7 @@ class CSVReaderTest {
     @Test
     void testReadWithTypeConverter() throws IOException {
         String[] properties = {"firstName", "lastName", "telephone"};
-        String[] header = {"First Name", "Last Name", "Phone" };
+        String[] header = {"First Name", "Last Name", "Phone"};
         CSVReader<Contact> csvReader = CSVReader
                 .createWithHeaderMapping(Contact.class, header, properties)
                 .registerConverter(Telephone.class, Telephone::new);
@@ -126,7 +123,7 @@ class CSVReaderTest {
     @Test
     public void testReadWithPropertyConverter() throws IOException {
         String[] properties = {"firstName", "lastName", "telephone"};
-        String[] header = {"First Name", "Last Name", "Phone" };
+        String[] header = {"First Name", "Last Name", "Phone"};
         Function<String, Telephone> telephoneConverter = Telephone::new;
         FlatFileReader<Contact> csvReader = CSVReader
                 .createWithHeaderMapping(Contact.class, header, properties)
