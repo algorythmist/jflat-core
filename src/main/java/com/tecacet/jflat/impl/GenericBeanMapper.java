@@ -47,6 +47,13 @@ public class GenericBeanMapper<T> implements BeanMapper<T> {
         propertySetter.setProperty(bean, property, value);
     }
 
+    /**
+     * Register a converter from String to any type that only applies to a specific property
+     *
+     * @param property  the name of the property that will be converted using this converter
+     * @param converter A function transforming a String to the desired value
+     * @param <S>       the target type of the conversion
+     */
     public <S> void registerConverter(String property, Function<String, S> converter) {
         propertyConverters.put(property, converter);
     }

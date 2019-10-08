@@ -1,6 +1,7 @@
 - Skip comments when reading
-- reader: read derived properties
-- reader: skip rows
+- reader: Case 1: Support properties on the bean that are derived by more than one field on the record
+- reader: Case 2: Support multiple properties on the bean that are derived by one or more fields on the record
+- writer: Write fields that derive from multiple properties on the bean
 - support class inheritance for converters
 - README: converters, custom properties, CSVFormat
 - BUG: property and class converters clash
