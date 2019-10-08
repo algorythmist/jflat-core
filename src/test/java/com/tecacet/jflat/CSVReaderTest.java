@@ -15,7 +15,6 @@ import com.tecacet.jflat.domain.ClassicQuote;
 import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ImmutableQuote;
 import com.tecacet.jflat.domain.Telephone;
-import com.tecacet.jflat.impl.jodd.JoddConverterRegistry;
 
 class CSVReaderTest {
 
@@ -115,9 +114,6 @@ class CSVReaderTest {
         assertEquals("Seymour", contact.getFirstName());
         assertEquals("Skinner", contact.getLastName());
         assertEquals("(290) 8972672", contact.getTelephone().toString());
-
-        //TODO
-        new JoddConverterRegistry().unregister(Telephone.class);
     }
 
     @Test
@@ -136,7 +132,7 @@ class CSVReaderTest {
         assertEquals("(290) 8972672", contact.getTelephone().toString());
     }
 
-    //@Test
+    @Test
     public void testReadWithClashingConverters() throws IOException {
         String[] properties = {"firstName", "lastName", "telephone"};
         String[] header = {"First Name", "Last Name", "Phone"};

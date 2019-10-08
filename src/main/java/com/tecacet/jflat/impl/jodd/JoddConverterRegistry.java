@@ -18,10 +18,10 @@ public class JoddConverterRegistry implements ConverterRegistry {
 
 	private static <C> TypeConverter<C> fromFunction(Function<String, C> function) {
 		return o -> {
-			if (o == null) {
-				return null;
+			if (!(o instanceof String)) {
+				return (C)o;
 			}
-			return function.apply(o.toString().trim());
+			return function.apply((String)o);
 		};
 	}
 }

@@ -10,6 +10,7 @@ public class JoddPropertyGetter<T> implements PropertyGetter<T> {
     public JoddPropertyGetter() {
         this(BeanUtil.declaredForcedSilent);
     }
+
     public JoddPropertyGetter(BeanUtil beanUtil) {
         this.beanUtil = beanUtil;
     }

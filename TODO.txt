@@ -4,5 +4,4 @@
 - writer: Write fields that derive from multiple properties on the bean
 - support class inheritance for converters
 - README: converters, custom properties, CSVFormat
-- BUG: property and class converters clash
 - How to get CSVWriter methods to return a typed object?
