@@ -1,6 +1,5 @@
 - Skip comments when reading
-- reader: Case 1: Support properties on the bean that are derived by more than one field on the record
-- reader: Case 2: Support multiple properties on the bean that are derived by one or more fields on the record
+- readAsStream should return both bean and record
 - writer: Write fields that derive from multiple properties on the bean
 - support class inheritance for converters
 - README: converters, custom properties, CSVFormat

@@ -35,6 +35,12 @@ public abstract class AbstractFlatFileReader<T> implements FlatFileReader<T> {
         return this;
     }
 
+    @Override
+    public List<T> readAllWithCallback(String resourceName, FlatFileReaderCallback<T> callback) throws IOException {
+        InputStream is = resourceLoader.loadResource(resourceName);
+        return readAllWithCallback(is, callback);
+    }
+
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }

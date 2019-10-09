@@ -29,11 +29,17 @@ class FixedWidthReaderTest {
                 new int[]{20, 10, 12})
                 .withSkipRows(1)
                 .registerConverter(Telephone.class, s -> new Telephone(s));
-        //TODO: map name
-
-        List<Contact> items = reader.readAll("directory.txt");
-        assertEquals(3, items.size());
-        items.forEach(c -> System.out.println(c));
+        List<Contact> contacts = reader.readAllWithCallback("directory.txt", (record, contact) -> {
+            String[] fullName = record.get(0).trim().split("\\s+");
+            contact.setFirstName(fullName[0]);
+            contact.setLastName(fullName[1]);
+        });
+        assertEquals(3, contacts.size());
+        Contact contact = contacts.get(1);
+        assertEquals("Mary", contact.getFirstName());
+        assertEquals("Hartford", contact.getLastName());
+        assertEquals("(319) 5194341", contact.getTelephone().toString());
+        assertEquals(Address.State.CA, contact.getAddress().getState());
     }
 
     @Test
