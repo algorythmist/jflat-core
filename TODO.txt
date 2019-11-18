@@ -1,6 +1,9 @@
 - Skip comments when reading
+- Skip blank lines
 - readAsStream should return both bean and record
 - writer: Write fields that derive from multiple properties on the bean
-- support class inheritance for converters
 - README: converters, custom properties, CSVFormat
+
+Later
+- support class inheritance for converters
 - How to get CSVWriter methods to return a typed object?

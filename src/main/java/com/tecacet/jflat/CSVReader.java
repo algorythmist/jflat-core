@@ -45,4 +45,5 @@ public class CSVReader<T> extends GenericFlatFileReader<T> {
         super.registerConverter(type, converter);
         return this;
     }
+
 }

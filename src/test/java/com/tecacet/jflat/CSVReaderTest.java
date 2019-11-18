@@ -25,8 +25,8 @@ class CSVReaderTest {
                         .withFirstRecordAsHeader()
                         .withSkipHeaderRecord(true));
         List<String[]> contacts = reader.readAll("contacts.csv");
-        assertEquals(2, contacts.size());
-        assertEquals("Aardvark", contacts.get(0)[0]);
+        assertEquals(3, contacts.size());
+        assertEquals("Homer", contacts.get(0)[0]);
     }
 
     @Test
@@ -108,7 +108,7 @@ class CSVReaderTest {
         CSVReader<Contact> csvReader = CSVReader
                 .createWithHeaderMapping(Contact.class, header, properties)
                 .registerConverter(Telephone.class, Telephone::new);
-        List<Contact> contacts = csvReader.readAll("contacts1.csv");
+        List<Contact> contacts = csvReader.readAll("contacts.csv");
         assertEquals(3, contacts.size());
         Contact contact = contacts.get(1);
         assertEquals("Seymour", contact.getFirstName());
@@ -124,7 +124,7 @@ class CSVReaderTest {
         FlatFileReader<Contact> csvReader = CSVReader
                 .createWithHeaderMapping(Contact.class, header, properties)
                 .registerConverter("telephone", telephoneConverter);
-        List<Contact> contacts = csvReader.readAll("contacts1.csv");
+        List<Contact> contacts = csvReader.readAll("contacts.csv");
         assertEquals(3, contacts.size());
         Contact contact = contacts.get(1);
         assertEquals("Seymour", contact.getFirstName());
@@ -141,11 +141,24 @@ class CSVReaderTest {
                 .createWithHeaderMapping(Contact.class, header, properties)
                 .registerConverter(Telephone.class, Telephone::new)
                 .registerConverter("telephone", telephoneConverter);
-        List<Contact> contacts = csvReader.readAll("contacts1.csv");
+        List<Contact> contacts = csvReader.readAll("contacts.csv");
         assertEquals(3, contacts.size());
         Contact contact = contacts.get(1);
         assertEquals("Seymour", contact.getFirstName());
         assertEquals("Skinner", contact.getLastName());
         assertEquals("(290) 8972672", contact.getTelephone().toString());
+    }
+
+    @Test
+    public void testReadWithComments() throws IOException {
+        String[] properties = {"firstName", "lastName", "telephone"};
+        String[] header = {"First Name", "Last Name", "Phone"};
+        Function<String, Telephone> telephoneConverter = Telephone::new;
+        CSVReader<Contact> csvReader = CSVReader
+                .createWithHeaderMapping(Contact.class, header, properties)
+                .registerConverter(Telephone.class, Telephone::new)
+                .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withCommentMarker('#'));
+        List<Contact> contacts = csvReader.readAll("contacts_with_comments.csv");
+        assertEquals(3, contacts.size());
     }
 }

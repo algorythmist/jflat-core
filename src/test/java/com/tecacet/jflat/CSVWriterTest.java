@@ -86,17 +86,17 @@ class CSVWriterTest {
                 .createForProperties(properties)
                 .withHeader(header)
                 .registerConverterForClass(Telephone.class, telephone -> telephone.getNumber() + telephone.getAreaCode());
-        csvWriter.writeToFile("contacts1.csv", contacts);
+        csvWriter.writeToFile("contacts.csv", contacts);
 
         CSVReader<Contact> csvReader = CSVReader.createWithHeaderMapping(Contact.class, header, properties);
-        csvReader.registerConverter(Telephone.class, s -> new Telephone(s));
-        List<Contact> results = csvReader.readAll("contacts1.csv");
+        csvReader.registerConverter(Telephone.class, Telephone::new);
+        List<Contact> results = csvReader.readAll("contacts.csv");
         assertEquals(3, results.size());
         assertEquals("(908) 1672312", results.get(0).getTelephone().toString());
         assertEquals(contacts.get(1).getAddress().getCity(), results.get(1).getAddress().getCity());
         assertEquals(contacts.get(1).getAddress().getState(), results.get(1).getAddress().getState());
 
-        boolean deleted = new File("contacts1.csv").delete();
+        boolean deleted = new File("contacts.csv").delete();
         assertTrue(deleted);
     }
 

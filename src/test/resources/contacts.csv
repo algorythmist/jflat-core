@@ -1,3 +1,4 @@
-First Name,Last Name,Name,E-mail Address,Home Street,Home City,Home Postal Code,Home State,Home Country/Region,Home Phone,Business Street,Business City,Business Postal Code,Business State,Business Country/Region,Business Phone,Company,Job Title,Notes
-Aardvark,,Aardvark Books ,aadvark@pinkpanther.com,,,,,,,,,,,,415 552 6733,,,
-Leonard,Cohen,,lcohen@towerofsong.edu,,,,,Canada,,,,,,,,,,
+First Name,Last Name,Phone,Street,City,State,Zip
+Homer,Simpson,9081672312,24 Maple St.,Springfield,NV,12345
+Seymour,Skinner,2908972672,96 Orchard Ave.,Springfield,NV,12345
+Marge,Simpson,9081672312,24 Maple St.,Springfield,NV,12345
