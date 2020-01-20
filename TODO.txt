@@ -1,3 +1,0 @@
-
-
-- README: converters, custom properties, CSVFormat
