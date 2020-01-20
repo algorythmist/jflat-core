@@ -82,9 +82,8 @@ class CSVWriterTest {
         String[] properties = {"firstName", "lastName", "telephone",
                 "address.numberAndStreet", "address.city", "address.state", "address.zip"};
         String[] header = {"First Name", "Last Name", "Phone", "Street", "City", "State", "Zip"};
-        CSVWriter csvWriter = CSVWriter
-                .createForProperties(properties)
-                .withHeader(header)
+        CSVWriter<Contact> csvWriter = CSVWriter.createForProperties(properties);
+        csvWriter.withHeader(header)
                 .registerConverterForClass(Telephone.class, telephone -> telephone.getNumber() + telephone.getAreaCode());
         csvWriter.writeToFile("contacts.csv", contacts);
 

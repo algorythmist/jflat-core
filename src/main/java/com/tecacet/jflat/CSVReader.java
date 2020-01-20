@@ -46,4 +46,9 @@ public class CSVReader<T> extends GenericFlatFileReader<T> {
         return this;
     }
 
+    @Override
+    public CSVFileParser getParser() {
+        return (CSVFileParser)parser;
+    }
+
 }

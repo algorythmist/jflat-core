@@ -54,4 +54,12 @@ public class GenericFlatFileReader<T> extends AbstractFlatFileReader<T> {
     public void setBeanMapper(BeanMapper<T> beanMapper) {
         this.beanMapper = beanMapper;
     }
+
+    public BeanMapper<T> getBeanMapper() {
+        return beanMapper;
+    }
+
+    public FlatFileParser getParser() {
+        return parser;
+    }
 }

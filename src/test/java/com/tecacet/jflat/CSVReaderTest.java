@@ -15,6 +15,7 @@ import com.tecacet.jflat.domain.ClassicQuote;
 import com.tecacet.jflat.domain.Contact;
 import com.tecacet.jflat.domain.ImmutableQuote;
 import com.tecacet.jflat.domain.Telephone;
+import com.tecacet.jflat.domain.Order;
 
 class CSVReaderTest {
 
@@ -81,7 +82,7 @@ class CSVReaderTest {
     }
 
     @Test
-    void testWithCSVFormat() throws IOException {
+    void testWithTDFFormat() throws IOException {
         String[] properties = {"firstName", "lastName", "telephone",
                 "address.numberAndStreet", "address.city", "address.state", "address.zip"};
         CSVReader<Contact> csvReader = CSVReader.createWithIndexMapping(Contact.class, properties)
@@ -160,5 +161,13 @@ class CSVReaderTest {
                 .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withCommentMarker('#'));
         List<Contact> contacts = csvReader.readAll("contacts_with_comments.csv");
         assertEquals(3, contacts.size());
+    }
+
+    @Test
+    public void readWithoutHeader() throws IOException {
+        CSVReader<Order> reader = CSVReader.createWithIndexMapping(Order.class,
+                new String[] {"number",null, "price"});
+        List<Order> orders = reader.readAll("orders_without_header.csv");
+        assertEquals(2, orders.size());
     }
 }
