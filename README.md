@@ -5,6 +5,14 @@ It includes support for CSV, fixed width format, arbitrarily delimited data, exc
 
 ## Getting started with JFlat
 
+```xml
+<dependency>
+    <groupId>com.tecacet</groupId>
+    <artifactId>jflat-core</artifactId>
+    <version>${jflat.version}</version>
+</dependency>
+```
+
 ### How to read a  file into an list of String arrays
 
 ```java
@@ -48,6 +56,70 @@ The following example specifies a CSV format to read a tab-delimited file:
                 .withFormat(CSVFormat.TDF)
                 .registerConverter(Telephone.class, Telephone::new);
     List<Contact> contacts = csvReader.readAll("contacts.tdf");
+```
+
+### Custom Data Conversion
+
+Custom conversion to the desired data type is accomplished easily by registering a converter with the reader. 
+A converter is simple a java.util.Function. 
+For example, suppose we want to convert telephone numbers to the custom Telephone class:
+
+```java
+public class Telephone {
+
+    private final String areaCode;
+    private final String number;
+
+    public Telephone(String phoneNumber) {
+        String normalized = phoneNumber.replaceAll("[-||\\s+]", "").trim();
+        if (normalized.length() != 10) {
+            throw new IllegalArgumentException("Invalid Phone Number");
+        }
+        this.areaCode = normalized.substring(0,3);
+        this.number = normalized.substring(3, 10);
+    }
+```
+
+We can register a converter that invokes the Telephone constructor like this:
+
+```java
+    CSVReader<Contact> csvReader = CSVReader
+            .createWithHeaderMapping(Contact.class, header, properties)
+            .registerConverter(Telephone.class, Telephone::new)
+            .withFormat(CSVFormat.DEFAULT.withFirstRecordAsHeader().withCommentMarker('#'));
+```
+The above example also illustrates how we can use CSV format to skip comments.
+
+Converters can be registered either by type, as illustrated above, or by property:
+
+```java
+String[] properties = {"firstName", "lastName", "telephone"};
+String[] header = {"First Name", "Last Name", "Phone"};
+Function<String, Telephone> telephoneConverter = Telephone::new;
+FlatFileReader<Contact> csvReader = CSVReader
+                .createWithHeaderMapping(Contact.class, header, properties)
+                .registerConverter("telephone", telephoneConverter);
+```
+
+### Reading other file formats
+
+JFlat does not only support CSV but other flat file types, such as fixed width. 
+Here is an example of how to read a fixed width file that looks like this:
+
+```csv
+NAME                STATE     TELEPHONE   
+John Smith          WA        418-311-4111
+   Mary Hartford    CA        319-519-4341
+Evan Nolan          IL        219-532-4301
+```
+
+```java
+FixedWidthReader<Contact> reader = FixedWidthReader.createWithIndexMapping(
+                Contact.class,
+                new String[]{"name", "address.state", "telephone"},
+                new int[]{20, 10, 12})
+                .withSkipRows(1)
+                .registerConverter(Telephone.class, s -> new Telephone(s));
 ```
 
 ## Writing to files
@@ -124,4 +196,46 @@ We use a FlatFileReaderCallback to parse the complete name into first and last n
     String[] header = new String[] { "Number", "Price" };
     CSVReader<Order> csvReader = CSVReader.createWithHeaderMapping(Order.class, header, properties);
     csvReader.read("orders.csv", callback);
+```
+
+### Writing custom properties
+
+When writing files, the output format does not need to match the source beans exactly. 
+Suppose we have this contact class
+
+```java
+public class Contact {
+    private String firstName;
+    private String lastName;
+    private Telephone telephone;
+    private Address address;
+}
+```
+
+And we want to export a list of instances in fixed width format where the first 20 
+characters is the full name in the form Last, First, the next 40 the entire address, 
+the next 10 the phone number without the area code, and the last 9 the zip code in parentheses.
+
+The output file will look like this:
+```csv
+Tolstoy, Leo        Polyana, Springfield, NV, 12345         1234900   (12345)
+Karenina, Anna      Liverpool, Springfield, NV, 12345       7862121   (12345)
+```
+
+This can be easily accomplished by registering custom property getters, or property converters 
+that can be registered either by type or by property name as illustrated in this example:
+
+```java
+String[] properties = {"name", "address", "telephone", "address.zip"};
+FixedWidthWriter<Contact> fixedWidthWriter = new FixedWidthWriter<>(new int[] {20, 40, 10, 7}, properties);
+
+//register a custom property getter, which is any Function that takes the target bean and returns a String
+fixedWidthWriter.registerPropertyGetter("name", contact -> contact.getLastName() + ", " + contact.getFirstName());
+
+//Register a custom String converter for the type Telephone. In this case, we want the number without the area code
+fixedWidthWriter.registerConverterForClass(Telephone.class, Telephone::getNumber);
+
+//Register a custom converter for a property by name. In this case we want to enclose the zip code in parenthesis
+Function<Integer, String> zipConverter = i -> "(" + i + ")";
+fixedWidthWriter.registerConverterForProperty("address.zip", zipConverter);
 ```
