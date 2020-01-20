@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.tecacet.jflat.domain.Address;
 import com.tecacet.jflat.domain.ClassicQuote;
 import com.tecacet.jflat.domain.Contact;
+import com.tecacet.jflat.domain.Employee;
 import com.tecacet.jflat.domain.ImmutableQuote;
 import com.tecacet.jflat.domain.Telephone;
 import com.tecacet.jflat.domain.Order;
@@ -169,5 +170,25 @@ class CSVReaderTest {
                 new String[] {"number",null, "price"});
         List<Order> orders = reader.readAll("orders_without_header.csv");
         assertEquals(2, orders.size());
+    }
+
+    @Test
+    public void readWithPropertyConverters() throws IOException {
+        CSVReader<Employee> csvReader = CSVReader
+                .createWithHeaderMapping(Employee.class,
+                        new String[] {"User ID", "First Name", "Last Name", "Worked Minutes"},
+                        new String[] {"userId", "firstName", "lastName", "workedHours" });
+        //register a special converter for the property workedHours
+        csvReader.registerConverter("workedHours",
+                minutes -> String.valueOf(Double.valueOf(minutes)/60.0));
+        List<Employee> employees = csvReader.readAllWithCallback("employees.csv",
+                //The callback can be used to help map attributes from the raw record to the target bean
+                (record, employee) -> {
+                    String name = String.format("%s %s", record.get("First Name"), record.get("Last Name"));
+                    employee.setEmployeeName(name);
+                });
+        assertEquals(2, employees.size());
+        assertEquals("Jon Snow", employees.get(0).getEmployeeName());
+        assertEquals("0.5", employees.get(1).getWorkedHours());
     }
 }
